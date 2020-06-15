@@ -7,10 +7,13 @@
 }
 
 .App-header {
-    background-color: #222;
-    height: 50px;
-    padding: 10px;
     color: white;
+    margin: -10px -10px 0px -10px;
+}
+
+.App-header img {
+    height: 50px;
+    width: 50px;
 }
 
 .App-title {
@@ -18,6 +21,7 @@
 }
 
 .App-stack-view {
+    max-width: 50px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
 }

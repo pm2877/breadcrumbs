@@ -1,12 +1,34 @@
 /*global chrome*/
 
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import logo from './logo.png';
 import './App.css';
+import StackItem from './stackItem';
 
-class App extends Component {
+export default class App extends React.Component {
+    static propTypes = {
+        breadcrumb: PropTypes.array
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            breadcrumb: []
+        };
+    }
+
+    componentDidMount() {
+        chrome.runtime.sendMessage(
+            {message: 'get_breadcrumb'},
+            function(response) {
+                this.setState({breadcrumb: response.breadcrumb});
+            }.bind(this)
+        );
+    }
+
     render() {
-        const {breadcrumb = []} = this.props;
+        const {breadcrumb = []} = this.state;
         return (
             <div className="App">
                 <header className="App-header">
@@ -15,17 +37,26 @@ class App extends Component {
                             src={chrome.runtime.getURL('static/media/logo.png')}
                             className="App-logo"
                             alt="logo"
+                            title="Breadcrumbs"
                         />
-                    ) : (
-                        <img src={logo} className="App-logo" alt="logo" />
-                    )} */}
-
-                    <h1 className="App-title">B</h1>
+                    ) : ( */}
+                    <img
+                        src={logo}
+                        className="App-logo"
+                        alt="logo"
+                        title="Breadcrumbs"
+                    />
+                    {/* ) */}}
                 </header>
                 <div className="App-stack-view">
-                    {breadcrumb.reverse().map(crumb => {
+                    {breadcrumb.map((crumb, index) => {
+                        console.log('crumb: ', crumb);
                         return (
-                            <img src={crumb.faviconUrl} title={crumb.title} />
+                            <StackItem
+                                key={index}
+                                index={index}
+                                details={crumb}
+                            />
                         );
                     })}
                 </div>
@@ -33,5 +64,3 @@ class App extends Component {
         );
     }
 }
-
-export default App;

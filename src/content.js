@@ -22,12 +22,6 @@ class Main extends React.Component {
                     {// Callback is invoked with iframe's window and document instances
                     ({document, window}) => {
                         // Render Children
-
-                        //  return (
-                        //     <div className={'my-extension'}>
-                        //          <h1>Hello world - My first Extension</h1>
-                        //     </div>
-                        //  )
                         return (
                             <App
                                 document={document}
@@ -45,17 +39,10 @@ class Main extends React.Component {
 
 const app = document.createElement('div');
 app.id = 'my-extension-root';
-
+app.style.display = 'block';
 document.body.appendChild(app);
-let breadcrumb = [];
 
-chrome.runtime.sendMessage({message: 'add_location'}, function(response) {
-    breadcrumb = response.breadcrumb;
-    console.log('current breadcrumb: ', breadcrumb);
-    ReactDOM.render(<Main breadcrumb={breadcrumb} />, app);
-
-    app.style.display = 'block';
-});
+ReactDOM.render(<Main />, app);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.message === 'clicked_browser_action') {
