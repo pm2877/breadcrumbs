@@ -44,7 +44,7 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
         chrome.tabs.get(tabId, function(tab) {
             if (!breadcrumbs[tabId]) breadcrumbs[tabId] = [];
             const {title, favIconUrl, url} = tab;
-            faviconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=32`;
+            faviconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
             breadcrumbs[tabId].push({
                 tabId,
                 title,
