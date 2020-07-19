@@ -20,9 +20,23 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         sendResponse({
             breadcrumb: breadcrumbs[id]
         });
+    } else if (request.message === 'redirect_tab') {
+        const {tab = {}} = sender;
+        const {id: tabId} = tab;
+        const {url, stackIndex} = request;
+
+        const stackSize = breadcrumbs[tabId].length;
+        console.log('before: ', breadcrumbs[tabId]);
+        breadcrumbs[tabId].splice(stackIndex, stackSize - stackIndex);
+        console.log('after: ', breadcrumbs[tabId]);
+        chrome.tabs.update(tabId, {url}, function(tab) {
+            console.log('tab updated: ', tab);
+        });
+        sendResponse('tab updated');
     }
 });
 
+// Keeps track of the links clicked
 chrome.webNavigation.onCommitted.addListener(function(details) {
     const {tabId, transitionType} = details;
     console.log('++++++++++ transitionType: ', transitionType);
@@ -32,6 +46,7 @@ chrome.webNavigation.onCommitted.addListener(function(details) {
             const {title, favIconUrl, url} = tab;
             faviconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=32`;
             breadcrumbs[tabId].push({
+                tabId,
                 title,
                 faviconUrl,
                 url

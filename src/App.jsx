@@ -32,25 +32,16 @@ export default class App extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    {/* {this.props.isExt ? (
-                        <img
-                            src={chrome.runtime.getURL('static/media/logo.png')}
-                            className="App-logo"
-                            alt="logo"
-                            title="Breadcrumbs"
-                        />
-                    ) : ( */}
                     <img
                         src={logo}
                         className="App-logo"
                         alt="logo"
                         title="Breadcrumbs"
                     />
-                    {/* ) */}}
                 </header>
                 <div className="App-stack-view">
                     {breadcrumb.map((crumb, index) => {
-                        console.log('crumb: ', crumb);
+                        console.log('crumb: ', crumb, ' -> index: ', index);
                         return (
                             <StackItem
                                 key={index}
